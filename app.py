@@ -75,3 +75,14 @@ def create_new_user():
     db.session.commit()
 
     return redirect('/')
+
+@app.get('/users/<int:user_id>')
+def display_user_info(user_id):
+    """Display user info page"""
+
+    user = User.query.get(user_id)
+
+    return render_template(
+        'user_page.html',
+        user=user
+    )
