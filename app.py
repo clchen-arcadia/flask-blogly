@@ -31,7 +31,6 @@ def display_users():
     users = User.query.all()#order by is advisable
     return render_template(
         "users.html",
-        title="Users",
         users=users
     )
 
@@ -41,7 +40,6 @@ def display_new_user():#function name more better
 
     return render_template(
         "new_user.html",#same for html name
-        title='Create New User'
 
     )
 
@@ -91,7 +89,6 @@ def edit_user_info(user_id):#fn name picky
 
     return render_template(
         'user_edit.html',#same here
-        title='Edit a User',
         user=user
     )
 
@@ -139,4 +136,5 @@ def show_post_page(post_id):
     return render_template(
         'post_page.html',
         post=post,
-        user_id=user_id)
+        user_id=user_id
+    )

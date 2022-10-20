@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h1>Edit a User</h1>
+
 <form action="/users/{{ user.id }}/edit" method="POST">
   <label>First Name</label>
   <input id="first-name" name="first-name" value="{{ user.first_name }}">
