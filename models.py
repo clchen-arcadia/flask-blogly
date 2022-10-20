@@ -38,30 +38,31 @@ class User(db.Model):
         default=DEFAULT_IMAGE_URL
     )
 
-# class Post(db.Model):
-#     """Post to the blog"""
+class Post(db.Model):
+    """Post to the blog"""
 
-#     __tablename__ = "posts"
+    __tablename__ = "posts"
 
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True,
-#         autoincrement=True
-#     )
-#     title = db.Column(
-#         db.String(50),
-#         nullable=False
-#     )
-#     content = db.Column(
-#         db.String(10000),
-#         nullable=False
-#     )
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+        autoincrement=True
+    )
+    title = db.Column(
+        db.String(50),
+        nullable=False
+    )
+    content = db.Column(
+        db.String(10000),
+        nullable=False
+    )
     created_at = db.Column(
         db.DateTime,
         nullable=False,
         default=db.func.now()
     )
-#     user_id = db.Column(
-#         db.ForeignKey('user.id'),
-#         nullable=False
-#     )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        nullable=False
+    )

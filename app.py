@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, request, redirect, render_template
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -74,12 +74,12 @@ def create_new_user():
 def display_user_info(user_id):
     """Display user info page"""
 
-    user = User.query.get(user_id)#get_or_404 is better here
-
-    # posts = Post.query.all() #TODO: get by foreign key
+    user = User.query.get_or_404(user_id)
+    posts = Post.query.filter_by(user_id = user.id)
 
     return render_template(
         'user_page.html',
+        posts=posts,
         user=user
     )
 
@@ -128,3 +128,15 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/')
+
+@app.get('/posts/<int:post_id>')
+def show_post_page(post_id):
+    """ Show Post Page """
+
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user_id
+
+    return render_template(
+        'post_page.html',
+        post=post,
+        user_id=user_id)
