@@ -58,9 +58,88 @@ class UserViewTestCase(TestCase):
         db.session.rollback()
 
     def test_list_users(self):
+        """Tests route to page of list all users"""
+
         with self.client as c:
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("test_first", html)
             self.assertIn("test_last", html)
+
+    def test_get_edit_user(self):
+        """Tests route to get edit user form page"""
+
+        with self.client as c:
+            resp = c.get(f"/users/{self.user_id}/edit")
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn("test_first", html)
+            self.assertIn("test_last", html)
+
+    def test_post_edit_user(self):
+        """Tests route to edit user and its redirect"""
+
+        with self.client as c:
+
+            resp_post = c.post(
+                f"/users/{self.user_id}/edit",
+                data = {
+                    "first-name": "test_edit_new_first",
+                    "last-name": "test_edit_new_last",
+                    "image-url": "test_edit_new_image"
+                }
+            )
+
+            self.assertEqual(resp_post.status_code, 302)
+
+            self.assertEqual(resp_post.location, f"/users/{self.user_id}")
+
+            resp_new = c.get(resp_post.location)
+            html = resp_new.get_data(as_text=True)
+
+            self.assertIn("test_edit_new_first", html)
+            self.assertIn("test_edit_new_last", html)
+
+    def test_create_new_user(self):
+        """Tests route to create new user and redirect to users list page"""
+
+        with self.client as c:
+            resp_post = c.post(
+                "/users/new",
+                data = {
+                    "first-name": "test_new_first_name",
+                    "last-name": "test_new_last_name",
+                    "image-url": "test_new_img_url"
+                }
+            )
+
+            self.assertEqual(resp_post.status_code, 302)
+
+            resp_redirect = c.get(resp_post.location)
+            html = resp_redirect.get_data(as_text=True)
+
+            self.assertIn("test_new_first_name", html)
+            self.assertIn("test_new_last_name", html)
+
+    def test_delete_user(self):
+        """Tests route to delete a user and redirect"""
+
+        with self.client as c:
+            resp_post = c.post(
+                f"/users/{self.user_id}/delete",
+            )
+
+        self.assertEqual(resp_post.status_code, 302)
+
+        resp_new = c.get("/users")
+        self.assertEqual(resp_new.status_code, 200)
+
+        test_get = db.session.query(self.user_id)
+        print("---------TESTGET-------------", test_get)
+
+
+        # proposed tests to check that the deleted user's name is no longer shown
+        # html = resp_new.get_data(as_text=True)
+        # self.assertNotIn("test_first", html)
+        # self.assertNotIn("test_last", html)

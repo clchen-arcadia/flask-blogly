@@ -24,10 +24,6 @@ def display_home_page():
     return redirect("/users")
 
 
-# @app.post("/")
-# def
-
-
 @app.get("/users")
 def display_users():
     """Display the users page"""
@@ -53,8 +49,6 @@ def display_new_user():
 def create_new_user():
     """Handles form submission for a new user"""
 
-    print('YOU GOT HERE ------')
-
     data = request.form
     print(data, 'this is data')
 
@@ -74,7 +68,7 @@ def create_new_user():
 
     db.session.commit()
 
-    return redirect('/')
+    return redirect('/users')
 
 @app.get('/users/<int:user_id>')
 def display_user_info(user_id):
@@ -130,5 +124,3 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/')
-
-
