@@ -34,8 +34,8 @@ class UserViewTestCase(TestCase):
         self.client = app.test_client()
 
         test_user = User(
-            first_name="test_first",
-            last_name="test_last",
+            first_name="test_first_one",
+            last_name="test_last_one",
             image_url=None,
         )
 
@@ -65,8 +65,8 @@ class UserViewTestCase(TestCase):
             resp = c.get("/users")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn("test_first", html)
-            self.assertIn("test_last", html)
+            self.assertIn("test_first_one", html)
+            self.assertIn("test_last_one", html)
 
     def test_get_edit_user(self):
         """Tests route to get edit user form page"""
@@ -75,8 +75,8 @@ class UserViewTestCase(TestCase):
             resp = c.get(f"/users/{self.user_id}/edit")
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn("test_first", html)
-            self.assertIn("test_last", html)
+            self.assertIn("test_first_one", html)
+            self.assertIn("test_last_one", html)
 
     def test_post_edit_user(self):
         """Tests route to edit user and its redirect"""
@@ -141,10 +141,14 @@ class UserViewTestCase(TestCase):
 
 
         # proposed tests to check that the deleted user's name is no longer shown
-        # html = resp_new.get_data(as_text=True)
-        # self.assertNotIn("test_first", html)
-        # self.assertNotIn("test_last", html)
+        html = resp_new.get_data(as_text=True)
+        self.assertNotIn("test_first_one", html)
+        self.assertNotIn("test_last_one", html)
 
-#questions to ask. not going to blogly_test db?
 #date time?
+
 #what do we have to check? front end? backend? db? all three?
+#do we even have to test everything? what is reserved for unit testing
+
+#what's the diff with db.session.query vs Post.query or User.query
+#which one is better etc
