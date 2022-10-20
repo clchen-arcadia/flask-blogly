@@ -86,3 +86,49 @@ def display_user_info(user_id):
         'user_page.html',
         user=user
     )
+
+@app.get('/users/<int:user_id>/edit')
+def edit_user_info(user_id):
+    """Display edit user page"""
+
+    user = User.query.get(user_id)
+
+    return render_template(
+        'user_edit.html',
+        title='Edit a User',
+        user=user
+    )
+
+@app.post('/users/<int:user_id>/edit')
+def save_user_info(user_id):
+    """ Save user edit"""
+
+    user = User.query.get(user_id)
+
+    data = request.form
+
+    first_name = data.get('first-name')
+    last_name = data.get('last-name')
+    image_url = data.get('image-url')
+
+    user.first_name = first_name
+    user.last_name = last_name
+    user.image_url = image_url
+
+
+    db.session.commit()
+
+    return redirect(f'/users/{user.id}')
+
+
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
+    """ Delete user profile """
+
+    User.query.filter_by(id=user_id).delete()
+
+    db.session.commit()
+
+    return redirect('/')
+
+

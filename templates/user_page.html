@@ -6,8 +6,11 @@
 
 <img src="{{ user.image_url }}">
 
-<button>Edit</button>
-<button>Remove</button>
+<a href="/users/{{ user.id }}/edit"><button>Edit</button></a>
+
+<form action="/users/{{ user.id }}/delete" method="POST">
+  <button>Remove</button>
+</form>
 
 
 
