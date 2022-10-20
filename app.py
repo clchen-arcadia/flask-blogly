@@ -138,3 +138,61 @@ def show_post_page(post_id):
         post=post,
         user_id=user_id
     )
+
+@app.get('/users/<int:user_id>/posts/new')
+def display_form_new_post(user_id):
+    """Display page for form to create new post"""
+
+    user = User.query.get_or_404(user_id)
+
+    return render_template(
+        'new_post_form.html',
+        user=user
+    )
+
+@app.post('/users/<int:user_id>/posts/new')
+def submit_new_post(user_id):
+    """Function handles submission of new post and redirects"""
+
+    user = User.query.get_or_404(user_id)
+
+    data = request.form
+    title = data.get('post-title')
+    content = data.get('post-content')
+
+    new_post = Post(title=title, content=content, user_id=user_id)
+
+    db.session.add(new_post)
+
+    db.session.commit()
+
+    return redirect(f"/users/{user_id}")
+
+@app.get('/posts/<int:post_id>/edit')
+def show_edit_post_form(post_id):
+    """Function displays form to edit a post"""
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template(
+        'edit_post_form.html',
+        post=post
+    )
+
+@app.post('/posts/<int:post_id>/edit')
+def handle_edit_post(post_id):
+    """Function handles an edit post form submit"""
+
+    post = Post.query.get_or_404(post_id)
+
+    data = request.form
+
+    title = data.get('post-title')
+    content = data.get('post-content')
+
+    post.title = title
+    post.content = content
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
