@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app, db
-from models import DEFAULT_IMAGE_URL, User
+from models import DEFAULT_IMAGE_URL, User, connect_db
 
 # Let's configure our app to use a different database for tests
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///blogly_test"
@@ -16,6 +16,7 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
+connect_db(app)
 db.create_all()
 
 
@@ -143,3 +144,7 @@ class UserViewTestCase(TestCase):
         # html = resp_new.get_data(as_text=True)
         # self.assertNotIn("test_first", html)
         # self.assertNotIn("test_last", html)
+
+#questions to ask. not going to blogly_test db?
+#date time?
+#what do we have to check? front end? backend? db? all three?

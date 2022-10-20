@@ -76,6 +76,8 @@ def display_user_info(user_id):
 
     user = User.query.get(user_id)
 
+    # posts = Post.query.all() #TODO: get by foreign key
+
     return render_template(
         'user_page.html',
         user=user
