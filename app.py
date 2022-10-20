@@ -17,7 +17,7 @@ debug = DebugToolbarExtension(app)
 
 @app.get("/")
 def display_home_page():
-    """Presents the home page to the user"""
+    """Presents the home page to the user"""#not true right now
 
     #for now, redirect to users page
 
@@ -28,7 +28,7 @@ def display_home_page():
 def display_users():
     """Display the users page"""
 
-    users = User.query.all()
+    users = User.query.all()#order by is advisable
     return render_template(
         "users.html",
         title="Users",
@@ -36,11 +36,11 @@ def display_users():
     )
 
 @app.get('/users/new')
-def display_new_user():
+def display_new_user():#function name more better
     """Displays the form for a new user"""
 
     return render_template(
-        "new_user.html",
+        "new_user.html",#same for html name
         title='Create New User'
 
     )
@@ -74,7 +74,7 @@ def create_new_user():
 def display_user_info(user_id):
     """Display user info page"""
 
-    user = User.query.get(user_id)
+    user = User.query.get(user_id)#get_or_404 is better here
 
     # posts = Post.query.all() #TODO: get by foreign key
 
@@ -84,13 +84,13 @@ def display_user_info(user_id):
     )
 
 @app.get('/users/<int:user_id>/edit')
-def edit_user_info(user_id):
+def edit_user_info(user_id):#fn name picky
     """Display edit user page"""
 
-    user = User.query.get(user_id)
+    user = User.query.get(user_id)#get_or_404
 
     return render_template(
-        'user_edit.html',
+        'user_edit.html',#same here
         title='Edit a User',
         user=user
     )
@@ -99,13 +99,15 @@ def edit_user_info(user_id):
 def save_user_info(user_id):
     """ Save user edit"""
 
-    user = User.query.get(user_id)
+    user = User.query.get(user_id)#again here
 
     data = request.form
 
     first_name = data.get('first-name')
     last_name = data.get('last-name')
-    image_url = data.get('image-url')
+    image_url = data.get('image-url')#detect empty string here for placeholder!
+    #making it None doesnt work here either! default statement isnt triggered
+    #db error? whatever it is it doesnt trigger default statement
 
     user.first_name = first_name
     user.last_name = last_name

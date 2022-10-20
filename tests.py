@@ -89,14 +89,15 @@ class UserViewTestCase(TestCase):
                     "first-name": "test_edit_new_first",
                     "last-name": "test_edit_new_last",
                     "image-url": "test_edit_new_image"
-                }
+                },
+                #follow_redirects = True
             )
-
-            self.assertEqual(resp_post.status_code, 302)
+            #follow redirects. argument into client.post!
+            self.assertEqual(resp_post.status_code, 302)#200 for redirect
 
             self.assertEqual(resp_post.location, f"/users/{self.user_id}")
 
-            resp_new = c.get(resp_post.location)
+            resp_new = c.get(resp_post.location)#check status code again!
             html = resp_new.get_data(as_text=True)
 
             self.assertIn("test_edit_new_first", html)
@@ -149,6 +150,11 @@ class UserViewTestCase(TestCase):
 
 #what do we have to check? front end? backend? db? all three?
 #do we even have to test everything? what is reserved for unit testing
+#more organization for testing routes. next week.
+#we are checking. routes and html are what we expect. dont query db!!
+#the web-y parts. not the db part. not too much to it. but its a diff thing
 
 #what's the diff with db.session.query vs Post.query or User.query
 #which one is better etc
+#fundamentally they do the same thing. maybe for complex joining etc use db.session
+#get_or_404 get order_by bet_by get all get_all

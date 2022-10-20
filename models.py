@@ -56,11 +56,11 @@ class User(db.Model):
 #         db.String(10000),
 #         nullable=False
 #     )
-#     created_at = db.Column(
-#         db.DateTime,
-#         nullable=False,
-#         default=db.func.now
-#     )
+    created_at = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=db.func.now()
+    )
 #     user_id = db.Column(
 #         db.ForeignKey('user.id'),
 #         nullable=False
