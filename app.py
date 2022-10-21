@@ -196,3 +196,16 @@ def handle_edit_post(post_id):
     db.session.commit()
 
     return redirect(f'/posts/{post_id}')
+
+@app.post('/posts/<int:post_id>/delete')
+def handle_delete_post(post_id):
+    """Function handles deletion of a post"""
+
+    post = Post.query.get_or_404(post_id)
+    user_id = post.user_id
+
+    Post.query.filter_by(id=post_id).delete()
+
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')
